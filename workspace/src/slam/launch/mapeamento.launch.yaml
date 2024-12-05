@@ -1,0 +1,57 @@
+# launch:
+#   # args that can be set from the command line or a default will be used
+# - arg:
+#     name: "background_r"
+#     default: "0"
+# - arg:
+#     name: "background_g"
+#     default: "255"
+# - arg:
+#     name: "background_b"
+#     default: "0"
+# - arg:
+#     name: "nada"
+#     default: "my/chatter/ns"
+
+
+# - include:
+#     file: $(find-pkg-share cartographer_ros)/launch/cartographer_demo.launch.py
+
+# # include another launch file in the chatter_ns namespace
+# - group:
+#     - push-ros-namespace:
+#         namespace: "cartographer"
+#     - include:
+#         file: $(find-pkg-share cartographer_ros)/launch/cartographer_demo.launch.py
+
+# - node:
+#     package: SLAM
+#     executable: mapeamento
+#     name: mapeamento
+#     output: screen
+#     parameters:
+#       use_sim_time: true
+#       map_frame: map
+#       odom_frame: odom
+#       base_frame: base_link
+#       global_frame: map
+#       robot_base_frame: base_link
+#       scan_topic: /scan
+#       point_cloud_topic: /point_cloud
+
+launch:
+
+# Launch the teleop_key node
+- node:
+    pkg: "teleop_twist_keyboard"
+    exec: "teleop_twist_keyboard"
+    name: "teleop_key"
+    output: "screen"
+    remap:
+    -
+        from: "/cmd_vel"
+        to: "/robot1/cmd_vel"  # Adjust topic name if needed
+
+# Include the Cartographer launch file
+- include:
+    file: "/opt/ros/humble/share/turtlebot3_cartographer/launch/cartographer.launch.py"
