@@ -41,17 +41,18 @@
 
 launch:
 
-# Launch the teleop_key node
-- node:
-    pkg: "teleop_twist_keyboard"
-    exec: "teleop_twist_keyboard"
-    name: "teleop_key"
-    output: "screen"
-    remap:
-    -
-        from: "/cmd_vel"
-        to: "/robot1/cmd_vel"  # Adjust topic name if needed
-
 # Include the Cartographer launch file
 - include:
     file: "/opt/ros/humble/share/turtlebot3_cartographer/launch/cartographer.launch.py"
+
+# Launch the teleop_key node
+- node:
+    pkg: "turtlebot3_teleop"
+    exec: "teleop_keyboard"
+    name: "teleop_keyboard"
+    output: "screen"
+    launch-prefix: "xterm -e'"
+    remap:
+    -
+        from: "/cmd_vel"
+        to: "/cmd_vel"  # Adjust topic name if needed
